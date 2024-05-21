@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using Entities.Models;
 using Service.Contracts;
 
 namespace Service
@@ -6,12 +7,26 @@ namespace Service
     internal sealed class CompanyService : ICompanyService
     {
         private readonly IRepositoryManager _repository;
-        private readonly ILoggerManager _loggerManager;
+        private readonly ILoggerManager _logger;
 
         public CompanyService(IRepositoryManager repository, ILoggerManager loggerManager)
         {
             _repository = repository;
-            _loggerManager = loggerManager;
+            _logger = loggerManager;
+        }
+
+        public IEnumerable<Company> GetAllCompanies(bool trackChanges)
+        {
+            try
+            {
+                var companies = _repository.Company.GetAllCompanies(trackChanges);
+                return companies;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(GetAllCompanies)} service method {ex}.");
+                throw;
+            }
         }
     }
 }
