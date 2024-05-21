@@ -14,8 +14,8 @@ namespace Service
             _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(repository, logger)); 
         }
 
-        public ICompanyService CompanyService => throw new NotImplementedException();
+        public ICompanyService CompanyService => _companyService.Value;
 
-        public IEmployeeService EmployeeService => throw new NotImplementedException();
+        public IEmployeeService EmployeeService => _employeeService.Value;
     }
 }
